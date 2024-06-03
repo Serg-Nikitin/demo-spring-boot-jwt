@@ -14,7 +14,7 @@ import ru.nikitin.jwt.service.JwtSecurityService;
 
 @RestController
 @RequestMapping("/token")
-public class TokenController {
+public class TokenController extends BaseController {
 
     @Autowired
     private JwtSecurityService service;
@@ -28,5 +28,4 @@ public class TokenController {
     public TokenResponse refresh(@RequestBody RefreshTokenRequest request) {
         return service.refreshAccessToken(request.refreshToken());
     }
-
 }

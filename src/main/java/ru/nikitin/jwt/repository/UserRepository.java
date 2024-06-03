@@ -12,4 +12,6 @@ public interface UserRepository {
     Optional<User> findUserByUserName(String login);
 
     List<User> getAll();
+
+    User findUserById(Long aLong);
 }

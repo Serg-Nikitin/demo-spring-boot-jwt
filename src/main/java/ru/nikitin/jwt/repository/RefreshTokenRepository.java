@@ -7,4 +7,6 @@ import ru.nikitin.jwt.model.RefreshToken;
 public interface RefreshTokenRepository {
 
     RefreshToken save(RefreshToken token);
+
+    RefreshToken findValueById(String value);
 }

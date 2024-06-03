@@ -3,6 +3,7 @@ package ru.nikitin.jwt.repository.inmemory;
 import org.springframework.stereotype.Repository;
 import ru.nikitin.jwt.model.Role;
 import ru.nikitin.jwt.model.User;
+import ru.nikitin.jwt.model.exception.UserNotFoundException;
 import ru.nikitin.jwt.repository.UserRepository;
 
 import java.util.List;
@@ -31,6 +32,13 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         return repos;
+    }
+
+    @Override
+    public User findUserById(Long aLong) {
+        return repos.stream()
+                .filter(el -> el.getId().equals(aLong))
+                .findFirst().orElseThrow(() -> new UserNotFoundException("User not found by id"));
     }
 
 

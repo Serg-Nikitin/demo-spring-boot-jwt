@@ -15,4 +15,8 @@ public class UserService {
     public Optional<User> findUserByUserName(String userName) {
         return repo.findUserByUserName(userName);
     }
+
+    public User findUserById(Long aLong) {
+       return repo.findUserById(aLong);
+    }
 }
