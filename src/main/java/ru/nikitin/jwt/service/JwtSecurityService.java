@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.nikitin.jwt.model.dto.TokenResponse;
 import ru.nikitin.jwt.service.function.ConvertTokenToResponse;
 import ru.nikitin.jwt.service.function.CreateTokenDataFunction;
+import ru.nikitin.jwt.service.function.GetTokenDataFunction;
 import ru.nikitin.jwt.service.function.RefreshTokenIfUserExistsFunction;
 
 @Service
@@ -20,6 +21,8 @@ public class JwtSecurityService {
     private final ConvertTokenToResponse convert;
     private final CreateTokenDataFunction createToken;
 
+    private final GetTokenDataFunction getToken;
+
     public TokenResponse login(String login, String password) throws AuthException {
         return userService.findUserByUserName(login)
                 .filter(user -> !passwordEncoder.matches(password, user.getPassword()))
@@ -30,7 +33,7 @@ public class JwtSecurityService {
 
     public TokenResponse refreshAccessToken(String refreshToken) {
         return check
-                .andThen(createToken)
+                .andThen(getToken)
                 .andThen(convert)
                 .apply(refreshToken);
     }

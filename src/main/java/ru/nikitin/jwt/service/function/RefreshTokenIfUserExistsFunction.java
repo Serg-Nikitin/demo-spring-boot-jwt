@@ -21,7 +21,7 @@ public class RefreshTokenIfUserExistsFunction implements Function<String, User> 
 
     @Override
     public User apply(String refreshToken) {
-        Long id = refreshRepository.findValueById(refreshToken).getId();
+        Long id = refreshRepository.findTokenByValue(refreshToken).getId();
         return userService.findUserById(id);
     }
 }

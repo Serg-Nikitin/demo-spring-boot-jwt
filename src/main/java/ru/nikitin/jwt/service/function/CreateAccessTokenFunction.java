@@ -31,7 +31,6 @@ public class CreateAccessTokenFunction implements Function<User, String> {
         return generateToken(user);
     }
 
-
     private String generateToken(User user) {
         return Jwts.builder()
                 .subject(user.getUsername())

@@ -8,5 +8,7 @@ public interface RefreshTokenRepository {
 
     RefreshToken save(RefreshToken token);
 
-    RefreshToken findValueById(String value);
+    RefreshToken findTokenByValue(String value);
+
+    RefreshToken findTokenById(Long id);
 }
