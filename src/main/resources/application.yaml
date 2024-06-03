@@ -4,7 +4,7 @@ spring:
 jwt:
   endpoint: /token
   type: Bearer_
-  secret: testSecretKey
+  secret: myTestSecretKeyMyTestSecretKeyMyTestSecretKeyMyTestSecretKeyMyTestSecretKey
   tokenExpiration: 1m
   refreshTokenExpiration: 10m
 server:

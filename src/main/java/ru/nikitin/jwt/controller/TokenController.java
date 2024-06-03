@@ -1,6 +1,7 @@
 package ru.nikitin.jwt.controller;
 
 import jakarta.security.auth.message.AuthException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import ru.nikitin.jwt.service.JwtSecurityService;
 @RequestMapping("/token")
 public class TokenController {
 
+    @Autowired
     private JwtSecurityService service;
 
     @GetMapping("/login")

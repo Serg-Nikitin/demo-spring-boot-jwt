@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 @Service
 public class CreateRefreshTokenFunction implements Function<User, RefreshToken> {
-
+    @Autowired
     private RefreshTokenRepository repository;
 
     @Override
@@ -20,4 +20,9 @@ public class CreateRefreshTokenFunction implements Function<User, RefreshToken> 
         Long id = user.getId();
         return repository.save(new RefreshToken(id, value));
     }
+//
+//    @Autowired
+//    public void setRepository(RefreshTokenRepository repository) {
+//        this.repository = repository;
+//    }
 }
