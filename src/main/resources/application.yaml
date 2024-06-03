@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: demo-spring-boot-jwt
+jwt:
+  endpoint: /token
+  type: Bearer_
+  secret: testSecretKey
+  tokenExpiration: 1m
+  refreshTokenExpiration: 10m
+server:
+  port: 8081
