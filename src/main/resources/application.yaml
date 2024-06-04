@@ -2,10 +2,20 @@ spring:
   application:
     name: demo-spring-boot-jwt
 jwt:
-  endpoint: /token
-  type: Bearer_
+  private:
+    url: "/private/**"
+  type: "Bearer "
   secret: myTestSecretKeyMyTestSecretKeyMyTestSecretKeyMyTestSecretKeyMyTestSecretKey
   tokenExpiration: 1m
   refreshTokenExpiration: 10m
 server:
   port: 8081
+springdoc:
+  swagger-ui:
+    path: "/public/swagger-ui.html"
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE

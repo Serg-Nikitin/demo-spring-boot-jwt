@@ -13,7 +13,7 @@ import ru.nikitin.jwt.service.JwtSecurityService;
 
 
 @RestController
-@RequestMapping("/token")
+@RequestMapping("/public/token")
 public class TokenController extends BaseController {
 
     @Autowired

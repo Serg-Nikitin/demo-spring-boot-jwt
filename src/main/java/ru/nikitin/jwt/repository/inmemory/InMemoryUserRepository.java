@@ -17,8 +17,8 @@ public class InMemoryUserRepository implements UserRepository {
 
     public InMemoryUserRepository() {
         this.repos = List.of(
-                new User(1L, "admin", "secret", Set.of(Role.ADMIN, Role.USER)),
-                new User(2L, "user", "pass", Set.of(Role.USER))
+                new User(1L, "admin", "$2y$10$ownGmACmEFGsEoRzDkFa8.AiWavQNH92daelZDMj1WIt.sNn5vSPe", List.of(Role.ADMIN, Role.USER)),
+                new User(2L, "user", "pass", List.of(Role.USER))
         );
     }
 

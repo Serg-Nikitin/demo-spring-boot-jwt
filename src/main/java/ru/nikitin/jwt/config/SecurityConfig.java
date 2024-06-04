@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.nikitin.jwt.security.JwtConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +21,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityWebFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   JwtConfigurer configurer
+    ) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
@@ -28,9 +31,11 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeHttpRequests ->
                         authorizeHttpRequests
-//                                .requestMatchers("/token/**").hasRole("ADMIN")
-                                .requestMatchers("/token/**", "/**", "/swagger-ui/**").permitAll()
+                                .requestMatchers("/private/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/private/user/**").hasRole("USER")
+                                .requestMatchers("/public/**").permitAll()
                                 .anyRequest().authenticated())
+                .with(configurer, Customizer.withDefaults())
                 .build();
     }
 }
