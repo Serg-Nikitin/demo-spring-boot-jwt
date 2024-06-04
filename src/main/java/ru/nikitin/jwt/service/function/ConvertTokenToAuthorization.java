@@ -24,9 +24,6 @@ public class ConvertTokenToAuthorization implements Function<String, Authenticat
         return new UsernamePasswordAuthenticationToken(
                 principal,
                 null,
-                principal.getRoles()
-                        .stream()
-                        .map(Role::valueOf)
-                        .toList());
+                Role.getRoles(principal.getRoles()));
     }
 }

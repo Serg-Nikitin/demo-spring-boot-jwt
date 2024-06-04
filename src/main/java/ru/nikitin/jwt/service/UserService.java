@@ -1,11 +1,13 @@
 package ru.nikitin.jwt.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.nikitin.jwt.model.User;
 import ru.nikitin.jwt.model.dto.FullUserData;
 import ru.nikitin.jwt.model.dto.Result;
 import ru.nikitin.jwt.model.dto.UserData;
+import ru.nikitin.jwt.model.exception.UserNotFoundException;
 import ru.nikitin.jwt.repository.UserRepository;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class UserService {
     private UserRepository repo;
 
     public Optional<User> findUserByUserName(String userName) {
-        return repo.findUserByUserName(userName);
+        return repo.findUserByUsername(userName);
     }
 
     public Optional<User> findUserById(Long aLong) {
@@ -26,22 +28,33 @@ public class UserService {
     }
 
     public UserData register(UserData user) {
-        return null;
+        User newUser = repo.save(new User(user));
+        return new UserData(newUser);
     }
 
     public FullUserData create(FullUserData data) {
-        return null;
+        User newUser = repo.save(new User(data));
+        return new FullUserData(newUser);
     }
 
     public FullUserData getUserById(Long id) {
-        return null;
+        User user = repo.findUserById(id).orElseThrow(() -> new UserNotFoundException("user not found"));
+        return new FullUserData(user);
     }
 
     public Result deleteById(Long id) {
-        return null;
+        int quantity = repo.delete(id);
+        if (quantity > 0) {
+            return new Result(true, "user deleted");
+        } else {
+            return new Result(false, "user not found by id");
+        }
     }
 
     public List<FullUserData> getAll() {
-        return null;
+        return repo.findAll(Sort.by(Sort.Direction.ASC, "user_name"))
+                .stream()
+                .map(FullUserData::new)
+                .toList();
     }
 }

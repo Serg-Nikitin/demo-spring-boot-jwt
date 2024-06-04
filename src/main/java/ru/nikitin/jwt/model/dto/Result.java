@@ -1,4 +1,4 @@
 package ru.nikitin.jwt.model.dto;
 
-public record Result(Boolean result) {
+public record Result(Boolean result, String msg) {
 }

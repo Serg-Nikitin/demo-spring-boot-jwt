@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class InMemoryUserRepository implements UserRepository {
+public class InMemoryUserRepository  {
 
     private List<User> repos;
 
@@ -27,18 +27,15 @@ public class InMemoryUserRepository implements UserRepository {
                 .findFirst();
     }
 
-    @Override
     public List<User> getAll() {
         return repos;
     }
 
-    @Override
     public Optional<User> findUserById(Long aLong) {
         return repos.stream().filter(el -> el.getId().equals(aLong)).findFirst();
     }
 
 
-    @Override
     public User save(User user) {
         repos.add(user);
         return user;
