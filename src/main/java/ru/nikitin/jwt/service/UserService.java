@@ -16,12 +16,13 @@ public class UserService {
 
     @Autowired
     private UserRepository repo;
+
     public Optional<User> findUserByUserName(String userName) {
         return repo.findUserByUserName(userName);
     }
 
-    public User findUserById(Long aLong) {
-       return repo.findUserById(aLong);
+    public Optional<User> findUserById(Long aLong) {
+        return repo.findUserById(aLong);
     }
 
     public UserData register(UserData user) {

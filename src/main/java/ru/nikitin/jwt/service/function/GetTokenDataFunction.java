@@ -15,6 +15,7 @@ public class GetTokenDataFunction implements Function<User, TokenData> {
     private CreateAccessTokenFunction accessToken;
     @Override
     public TokenData apply(User user) {
-        return new TokenData(accessToken.apply(user),  refreshToken.apply(user).getValue());
+        return user.isEmpty() ? new TokenData(null, null) :
+                new TokenData(accessToken.apply(user), refreshToken.apply(user).getValue());
     }
 }

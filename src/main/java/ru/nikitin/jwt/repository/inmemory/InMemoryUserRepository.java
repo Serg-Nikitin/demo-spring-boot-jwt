@@ -3,12 +3,10 @@ package ru.nikitin.jwt.repository.inmemory;
 import org.springframework.stereotype.Repository;
 import ru.nikitin.jwt.model.Role;
 import ru.nikitin.jwt.model.User;
-import ru.nikitin.jwt.model.exception.UserNotFoundException;
 import ru.nikitin.jwt.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
@@ -35,10 +33,8 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User findUserById(Long aLong) {
-        return repos.stream()
-                .filter(el -> el.getId().equals(aLong))
-                .findFirst().orElseThrow(() -> new UserNotFoundException("User not found by id"));
+    public Optional<User> findUserById(Long aLong) {
+        return repos.stream().filter(el -> el.getId().equals(aLong)).findFirst();
     }
 
 

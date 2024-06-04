@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.nikitin.jwt.model.dto.RefreshTokenRequest;
 import ru.nikitin.jwt.model.dto.TokenCredentialRequest;
 import ru.nikitin.jwt.model.dto.TokenResponse;
+import ru.nikitin.jwt.model.exception.JwtAuthException;
 import ru.nikitin.jwt.service.JwtSecurityService;
 
 
@@ -23,6 +24,11 @@ public class TokenController extends BaseController {
 
     @GetMapping("/refresh")
     public TokenResponse refresh(@RequestBody RefreshTokenRequest request) {
-        return service.refreshAccessToken(request.refreshToken());
+        TokenResponse tokenResponse = service.refreshAccessToken(request.refreshToken());
+        if (tokenResponse.isEmpty()) {
+            throw new JwtAuthException("the token is expired");
+        } else {
+            return tokenResponse;
+        }
     }
 }

@@ -16,7 +16,7 @@ public class TokenRepositoryImpl implements RefreshTokenRepository {
     private static Map<Long, RefreshToken> map = new HashMap<>();
 
     static {
-        map.put(1L, new RefreshToken(1L, "236f42bb-e523-4187-bb79-815fe135be6c"));
+        map.put(1L, new RefreshToken(1L, "236f42bb-e523-4187-bb79-815fe135be6c", 132321321321L));
     }
 
 

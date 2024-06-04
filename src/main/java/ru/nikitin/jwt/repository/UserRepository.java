@@ -13,5 +13,5 @@ public interface UserRepository {
 
     List<User> getAll();
 
-    User findUserById(Long aLong);
+    Optional<User> findUserById(Long aLong);
 }

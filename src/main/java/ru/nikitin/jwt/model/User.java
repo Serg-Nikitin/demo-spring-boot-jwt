@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -16,5 +17,9 @@ public class User {
     private String username;
     private String password;
     private List<Role> roles = new ArrayList<>();
+
+    public boolean isEmpty() {
+        return Objects.isNull(id);
+    }
 
 }

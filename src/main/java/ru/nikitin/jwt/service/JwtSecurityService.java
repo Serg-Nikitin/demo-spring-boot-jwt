@@ -3,25 +3,29 @@ package ru.nikitin.jwt.service;
 
 import jakarta.security.auth.message.AuthException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.nikitin.jwt.model.dto.TokenResponse;
-import ru.nikitin.jwt.service.function.ConvertTokenToResponse;
-import ru.nikitin.jwt.service.function.CreateTokenDataFunction;
-import ru.nikitin.jwt.service.function.GetTokenDataFunction;
-import ru.nikitin.jwt.service.function.RefreshTokenIfUserExistsFunction;
+import ru.nikitin.jwt.service.function.*;
 
 @Service
 @AllArgsConstructor
 public class JwtSecurityService {
     private final PasswordEncoder passwordEncoder;
+    @Autowired
     private final UserService userService;
-
-    private final RefreshTokenIfUserExistsFunction check;
+    @Autowired
+    private final RefreshTokenIfUserExistsFunction findUser;
+    @Autowired
     private final ConvertTokenToResponse convert;
+    @Autowired
     private final CreateTokenDataFunction createToken;
 
+    @Autowired
     private final GetTokenDataFunction getToken;
+    @Autowired
+    private final CheckExpirationRefreshTokenFunction checkRefreshToken;
 
     public TokenResponse login(String login, String password) throws AuthException {
         return userService.findUserByUserName(login)
@@ -32,7 +36,8 @@ public class JwtSecurityService {
     }
 
     public TokenResponse refreshAccessToken(String refreshToken) {
-        return check
+        return checkRefreshToken
+                .andThen(findUser)
                 .andThen(getToken)
                 .andThen(convert)
                 .apply(refreshToken);

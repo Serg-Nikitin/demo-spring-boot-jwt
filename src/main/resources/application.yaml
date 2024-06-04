@@ -1,6 +1,17 @@
 spring:
   application:
     name: demo-spring-boot-jwt
+  datasource:
+    username: admin
+    password: admin
+    url: jdbc:postgresql://localhost:5432/init_db
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+
 jwt:
   private:
     url: "/private/**"
@@ -18,4 +29,4 @@ logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        security: INFO
