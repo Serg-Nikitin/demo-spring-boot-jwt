@@ -19,7 +19,7 @@ import ru.nikitin.jwt.model.dto.TokenResponse;
 import ru.nikitin.jwt.service.JwtSecurityService;
 import ru.nikitin.jwt.utils.ConverterToJson;
 
-import java.util.Set;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -49,10 +49,10 @@ class TokenControllerTest {
 
     @Test
     void login() throws Exception {
-        User user = new User(1L, "admin", "secret", Set.of(Role.ADMIN, Role.USER));
+        User user = new User(1L, "admin", "secret", List.of(Role.ADMIN, Role.USER));
         TokenData tokenData = new TokenData("first", "second");
         TokenResponse tokenResp = new TokenResponse(tokenData);
-        when(securityService.login("admin", "secret")).thenReturn(tokenResp);
+        when(securityService.login("admin", "$2y$10$ownGmACmEFGsEoRzDkFa8.AiWavQNH92daelZDMj1WIt.sNn5vSPe")).thenReturn(tokenResp);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/token/login")

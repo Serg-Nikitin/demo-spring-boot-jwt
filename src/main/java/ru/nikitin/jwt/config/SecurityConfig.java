@@ -25,17 +25,26 @@ public class SecurityConfig {
                                                    JwtConfigurer configurer
     ) throws Exception {
         return http
+//                .headers(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeHttpRequests ->
                         authorizeHttpRequests
-                                .requestMatchers("/private/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/private/user/**").hasRole("USER")
-                                .requestMatchers("/public/**").permitAll()
+                                .requestMatchers("/private/admin/**").permitAll()/*.hasRole("ADMIN")*/
+                                .requestMatchers("/private/users/**").permitAll()/*.hasRole("USER")*/
+                                .requestMatchers(AUTH_WHITELIST).permitAll()
                                 .anyRequest().authenticated())
                 .with(configurer, Customizer.withDefaults())
                 .build();
     }
+    private static final String[] AUTH_WHITELIST = {
+//            "/public/authenticate",
+//            "/public/swagger-resources/**",
+            "/public/**",
+            "/public/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/public/swagger-ui/index.html"
+    };
 }

@@ -3,6 +3,7 @@ package ru.nikitin.jwt.model.security;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.nikitin.jwt.model.Role;
 import ru.nikitin.jwt.model.User;
 
 import java.util.Collection;
@@ -10,6 +11,7 @@ import java.util.Collection;
 /**
  * Not used
  */
+@Deprecated
 @AllArgsConstructor
 public class AuthUser implements UserDetails {
 
