@@ -4,27 +4,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.nikitin.jwt.controller.base.BaseTestController;
-import ru.nikitin.jwt.model.dto.TokenCredentialRequest;
 import ru.nikitin.jwt.model.dto.TokenResponse;
-
-import java.util.Objects;
+import ru.nikitin.jwt.model.dto.UserData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static ru.nikitin.jwt.controller.data.TestData.getTokenCreds;
 import static ru.nikitin.jwt.controller.data.TestData.getUser;
 
 
 class TokenControllerTest extends BaseTestController {
 
-
     @Test
     public void shouldLogInUserAndReturnTokenData() {
-        registerUser();
+        UserData data = new UserData(getUser());
+        ResponseEntity<UserData> userDataResponseEntity = registerUser();
+        assertEquals(data, userDataResponseEntity.getBody());
+        assertEquals(HttpStatus.OK, userDataResponseEntity.getStatusCode());
 
-        ResponseEntity<TokenResponse> entity = loginUser();
-        System.out.println(entity.getBody());
-        assertTrue( !Objects.requireNonNull(entity.getBody()).toString().isEmpty());
+        ResponseEntity<TokenResponse> entity = loginUser(getUser());
         assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
 

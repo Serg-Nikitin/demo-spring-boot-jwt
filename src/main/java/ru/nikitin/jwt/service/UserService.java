@@ -52,7 +52,7 @@ public class UserService {
     }
 
     public List<UserData> getAll() {
-        return repo.findAll(Sort.by(Sort.Direction.ASC, "user_name"))
+        return repo.findAll(Sort.by(Sort.Direction.ASC, "username"))
                 .stream()
                 .map(UserData::new)
                 .toList();

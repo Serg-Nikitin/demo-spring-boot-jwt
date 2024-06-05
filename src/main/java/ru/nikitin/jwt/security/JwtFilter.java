@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -72,8 +73,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
 
-            if (auth.isPresent() && auth.get() instanceof UsernamePasswordAuthenticationToken authUser) {
-                authUser.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            if (auth.isPresent() && auth.get() instanceof PreAuthenticatedAuthenticationToken authUser) {
                 SecurityContext newContext = strategy.createEmptyContext();
                 newContext.setAuthentication(authUser);
                 SecurityContextHolder.getContext().setAuthentication(authUser);

@@ -15,12 +15,3 @@ jwt:
   refreshTokenExpiration: 10m
 server:
   port: 8081
-#springdoc:
-#  swagger-ui:
-#    path: "/public/swagger-ui.html"
-
-#logging:
-#  level:
-#    org:
-#      springframework:
-#        security: INFO

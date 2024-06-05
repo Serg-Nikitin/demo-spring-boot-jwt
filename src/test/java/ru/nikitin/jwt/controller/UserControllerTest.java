@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.nikitin.jwt.controller.base.PrivateTestController;
-import ru.nikitin.jwt.model.dto.UserData;
 
 import java.util.List;
 
@@ -21,10 +20,8 @@ class UserControllerTest extends PrivateTestController {
 
     @Test
     public void shouldReturnListUsersForRoleUser() {
-        ResponseEntity<UserData> listResponseEntity = forUserGetAll();
-        System.out.println(listResponseEntity.getBody());
+        ResponseEntity<List> listResponseEntity = forUserGetAll();
         assertEquals(HttpStatus.OK, listResponseEntity.getStatusCode());
-
     }
 
 }

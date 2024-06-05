@@ -1,22 +1,22 @@
 package ru.nikitin.jwt.controller;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import ru.nikitin.jwt.controller.base.PublicTestController;
 import ru.nikitin.jwt.model.dto.TokenCredentialRequest;
 import ru.nikitin.jwt.model.dto.TokenResponse;
 import ru.nikitin.jwt.model.dto.UserData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.nikitin.jwt.controller.data.TestData.*;
+import static ru.nikitin.jwt.controller.data.TestData.getTokenCreds;
+import static ru.nikitin.jwt.controller.data.TestData.getUser;
 
 public class RegisterTestController extends PublicTestController {
 
     @Test
     public void shouldRegisterUser() {
         UserData data = new UserData(getUser());
-
-
         ResponseEntity<UserData> userDataResponseEntity = registerUser();
         assertEquals(data, userDataResponseEntity.getBody());
         assertEquals(HttpStatus.OK, userDataResponseEntity.getStatusCode());

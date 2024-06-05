@@ -7,9 +7,6 @@ import ru.nikitin.jwt.model.dto.TokenData;
 
 import java.util.function.Function;
 
-/**
- * Создает токен и передает на сохранение в репозиторий
- */
 @Service
 public class CreateTokenDataFunction implements Function<User, TokenData> {
 

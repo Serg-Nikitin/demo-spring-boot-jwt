@@ -3,6 +3,7 @@ package ru.nikitin.jwt.controller;
 import jakarta.security.auth.message.AuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nikitin.jwt.controller.base.BaseController;
 import ru.nikitin.jwt.model.dto.RefreshTokenRequest;
@@ -19,12 +20,12 @@ public class TokenController extends BaseController {
     @Autowired
     private JwtSecurityService service;
 
-    @PostMapping("/login")
+    @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public TokenResponse login(@RequestBody TokenCredentialRequest credential) throws AuthException {
         return service.login(credential.login(), credential.password());
     }
 
-    @GetMapping("/refresh")
+    @GetMapping( path = "/refresh" , consumes = MediaType.APPLICATION_JSON_VALUE)
     public TokenResponse refresh(@RequestBody RefreshTokenRequest request) {
         TokenResponse tokenResponse = service.refreshAccessToken(request.refreshToken());
         if (tokenResponse.isEmpty()) {

@@ -10,7 +10,7 @@ import ru.nikitin.jwt.model.dto.Result;
 import ru.nikitin.jwt.service.UserService;
 
 @RestController
-@RequestMapping(path = "/private/admin")
+@RequestMapping(path = "/private/admin", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminController extends BaseController {
 
     @Autowired
@@ -18,14 +18,14 @@ public class AdminController extends BaseController {
 
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/create")
     public FullUserData create(@RequestBody FullUserData data) {
         return service.create(data);
     }
 
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/update")
     public FullUserData update(@RequestBody FullUserData data) {
         return service.create(data);
     }

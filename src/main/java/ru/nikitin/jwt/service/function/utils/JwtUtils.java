@@ -60,6 +60,6 @@ public class JwtUtils {
         }
         Claims claims = getClaims(token, jwtSecret);
         long expiredTime = claims.getExpiration().getTime();
-        return new Date().getTime() > expiredTime;
+        return new Date().getTime() < expiredTime;
     }
 }

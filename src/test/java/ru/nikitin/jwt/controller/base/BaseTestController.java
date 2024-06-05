@@ -13,15 +13,16 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.PostgreSQLContainer;
-import ru.nikitin.jwt.controller.data.TestData;
-import ru.nikitin.jwt.model.dto.TokenData;
+import ru.nikitin.jwt.model.User;
+import ru.nikitin.jwt.model.dto.FullUserData;
 import ru.nikitin.jwt.model.dto.TokenResponse;
 import ru.nikitin.jwt.model.dto.UserData;
+
+import java.util.List;
 
 import static ru.nikitin.jwt.controller.data.TestData.*;
 
 @ExtendWith(SpringExtension.class)
-//@Testcontainers
 @Rollback
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -44,14 +45,15 @@ public class BaseTestController {
     public static String register = publicUrl.concat("/register");
     public static String token = publicUrl.concat("/token");
     public static String login = token.concat("/login");
-    public static String refresh = publicUrl.concat("/refresh");
+    public static String admin = privateUrl.concat("/admin");
+
 
     @Autowired
-    protected TestRestTemplate rest;
+    public void setRest(TestRestTemplate rest) {
+        this.rest = rest;
+    }
 
-    private HttpHeaders headers = new HttpHeaders();
-    private StringBuilder url = new StringBuilder();
-    private String body = null;
+    protected TestRestTemplate rest;
 
     @BeforeAll
     static void beforeAll() {
@@ -63,78 +65,66 @@ public class BaseTestController {
         postgres.stop();
     }
 
-
-//    protected <T> ResponseEntity<T> requestPost(Class<T> clazz) {
-//        HttpEntity entity = new HttpEntity(body, headers);
-//        return postResponse(url.toString(), entity, clazz);
-//
-//    }
-
-    protected <T> ResponseEntity<T> requestGet(Class<T> clazz) {
-        return rest.getForEntity(this.url.toString(), clazz);
-    }
-
-    private BaseTestController addHeaders(String name, String value) {
-        headers.add(name, value);
-        return this;
-    }
-
-    private BaseTestController addUrl(String url) {
-        this.url.append(url);
-        return this;
-    }
-
-    private BaseTestController setBody(Object object) {
-        body = TestData.convertTo(object);
-        return this;
-    }
-
-
-    public HttpEntity<String> getRequest(String json) {
-        var headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        return new HttpEntity<>(json, headers);
-    }
-
-    protected HttpEntity<String> createRequestWithBody(Object object) {
-        return getRequest(convertTo(object));
-    }
-
     protected <T> ResponseEntity<T> postResponse(String url, Object obj, Class<T> clazz) {
         return rest.postForEntity(url, obj, clazz);
     }
 
 
-    public ResponseEntity<UserData> forUserGetAll() {
-        String token = getToken();
-        var  headers = new HttpHeaders();
+    public ResponseEntity<List> forUserGetAll() {
+        String token = getToken(getUser());
+        var headers = new HttpHeaders();
         headers.setBearerAuth(token);
-        headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(headers);
-        return rest.exchange(getAll, HttpMethod.GET,entity, UserData.class);
+        return rest.exchange(getAll, HttpMethod.GET, entity, List.class);
     }
 
-    private String getToken(){
-        TokenData data = convertFrom(registerAndLogInUser().getBody().toString(), TokenData.class);
+    public ResponseEntity<FullUserData> forAdminGetById() {
+        String token = getToken(getAdmin());
+        var headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        HttpEntity entity = new HttpEntity(headers);
+        return rest.exchange(admin.concat("/1"), HttpMethod.GET, entity, FullUserData.class);
+    }
+
+    public ResponseEntity<FullUserData> forUserGetById() {
+        String token = getToken(getUser());
+        var headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        HttpEntity entity = new HttpEntity(headers);
+        return rest.exchange(admin.concat("/1"), HttpMethod.GET, entity, FullUserData.class);
+    }
+
+
+    private String getToken(User user) {
+        TokenResponse data = registerAndLogInUser(user).getBody();
         return data.token();
     }
 
-    private ResponseEntity<TokenResponse> registerAndLogInUser() {
-        registerUser();
-        return loginUser();
+    private ResponseEntity<TokenResponse> registerAndLogInUser(User user) {
+        registerUser(user);
+        ResponseEntity<TokenResponse> tokenResponseResponseEntity = loginUser(user);
+        return tokenResponseResponseEntity;
+    }
+
+
+    public ResponseEntity<UserData> registerUser(User user) {
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity(convertTo(user), headers);
+        return postResponse(register, entity, UserData.class);
     }
 
     public ResponseEntity<UserData> registerUser() {
-        var  headers = new HttpHeaders();
+        var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity entity = new HttpEntity(convertTo(getUser()), headers);
         return postResponse(register, entity, UserData.class);
     }
 
-    public ResponseEntity<TokenResponse> loginUser() {
-        var  headers = new HttpHeaders();
+    public ResponseEntity<TokenResponse> loginUser(User user) {
+        var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity entity = new HttpEntity(convertTo(getUser()), headers);
-        return postResponse(register, entity, TokenResponse.class);
+        HttpEntity entity = new HttpEntity(convertTo(getCreds(user)), headers);
+        return postResponse(login, entity, TokenResponse.class);
     }
 }

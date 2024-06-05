@@ -13,17 +13,15 @@ import ru.nikitin.jwt.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/private/users")
+@RequestMapping(path = "/private/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController extends BaseController {
 
     @Autowired
      private UserService service;
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/all")
     public List<UserData> getAll() {
         return service.getAll();
     }
-
-
 }

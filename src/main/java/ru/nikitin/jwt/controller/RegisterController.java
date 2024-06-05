@@ -18,7 +18,7 @@ public class RegisterController extends BaseController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserData register(@Valid @RequestBody UserData user) {
         return userService.register(user);
     }

@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Slf4j
 @Repository
-public class TokenRepositoryImpl implements RefreshTokenRepository {
+public class TokenRepositoryImpl {
 
     private static Map<Long, RefreshToken> map = new HashMap<>();
 
@@ -26,7 +26,6 @@ public class TokenRepositoryImpl implements RefreshTokenRepository {
         return token;
     }
 
-    @Override
     public RefreshToken findTokenByValue(String value) {
         return map.values()
                 .stream()
@@ -35,7 +34,6 @@ public class TokenRepositoryImpl implements RefreshTokenRepository {
                 .orElseThrow(() -> new RefreshTokenNotFoundException("Refresh token not found"));
     }
 
-    @Override
     public RefreshToken findTokenById(Long id) {
         return map.get(id);
     }

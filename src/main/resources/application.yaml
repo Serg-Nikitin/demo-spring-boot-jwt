@@ -17,8 +17,8 @@ jwt:
     url: "/private/**"
   type: "Bearer "
   secret: myTestSecretKeyMyTestSecretKeyMyTestSecretKeyMyTestSecretKeyMyTestSecretKey
-  tokenExpiration: 1m
-  refreshTokenExpiration: 10m
+  tokenExpiration: 10m
+  refreshTokenExpiration: 100m
 server:
   port: 8081
 springdoc:

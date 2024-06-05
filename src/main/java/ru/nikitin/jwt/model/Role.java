@@ -9,7 +9,7 @@ public enum Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return this.name();
+        return "ROLE_" + name();
     }
 
     public static List<Role> getRoles(List<String> rolesStr) {

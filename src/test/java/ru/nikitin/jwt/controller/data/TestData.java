@@ -3,6 +3,7 @@ package ru.nikitin.jwt.controller.data;
 import ru.nikitin.jwt.model.Role;
 import ru.nikitin.jwt.model.User;
 import ru.nikitin.jwt.model.dto.TokenCredentialRequest;
+import ru.nikitin.jwt.model.dto.TokenResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +20,7 @@ public class TestData {
         repos.put(admin, new User(1L, "admin",
                 "$2y$10$ownGmACmEFGsEoRzDkFa8.AiWavQNH92daelZDMj1WIt.sNn5vSPe",
                 List.of(Role.ADMIN, Role.USER)))/*secret*/;
-        repos.put(user, new User(2L, "user",
-                "$2a$10$XfnTCU7v.n49cI63NHeMNeAwyf7mWLcFXP9MevMXOjPBFOm9Sp5Mq",
-                List.of(Role.USER))/*pass*/);
+        repos.put(user, new User(2L, "user", "$2a$10$nDqcirCK9.J.wQFFTki3iuqwPnhzl5tvC1GqtqDsN.3qlW0M4mQUu", List.of(Role.USER))/*pass*/);
     }
 
     public static User getAdmin() {
@@ -30,6 +29,11 @@ public class TestData {
 
     public static User getUser() {
         return repos.get(user);
+    }
+
+
+    public static TokenCredentialRequest getCreds(User user) {
+        return new TokenCredentialRequest(user.getUsername(), user.getPassword());
     }
 
     public static String getAdminJson() {
@@ -50,5 +54,12 @@ public class TestData {
 
     public static TokenCredentialRequest getTokenCreds(User user) {
         return new TokenCredentialRequest(user.getUsername(), user.getPassword());
+    }
+
+    public static TokenResponse getTokenResponse(String token) {
+        String[] arr = token.split("token=")[1].split(",");
+        String accessToken = arr[0];
+        String refreshToken = arr[1].replace("]", "").split("=")[1];
+        return new TokenResponse(accessToken, refreshToken);
     }
 }
