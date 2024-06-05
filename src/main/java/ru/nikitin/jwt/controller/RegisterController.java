@@ -10,7 +10,7 @@ import ru.nikitin.jwt.service.UserService;
 
 @RestController()
 @RequestMapping("/public/register")
-public class RegisterController {
+public class RegisterController extends BaseController{
 
     @Autowired
     private UserService userService;

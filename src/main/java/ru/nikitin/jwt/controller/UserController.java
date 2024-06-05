@@ -21,12 +21,6 @@ public class UserController extends BaseController{
     @Autowired
      private UserService service;
 
-//    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-//    @GetMapping
-//    public FullUserData getUser(@AuthenticationPrincipal JwtPrincipal principal){
-//        return service.getUserById(principal.getId());
-//    }
-
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/all")
     public List<FullUserData> getAll(){
