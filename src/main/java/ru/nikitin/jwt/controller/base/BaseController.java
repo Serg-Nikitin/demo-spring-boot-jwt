@@ -1,4 +1,4 @@
-package ru.nikitin.jwt.controller;
+package ru.nikitin.jwt.controller.base;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 

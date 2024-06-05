@@ -1,4 +1,6 @@
 package ru.nikitin.jwt.model.dto;
 
-public record TokenCredentialRequest(String login, String password) {
+import jakarta.validation.constraints.NotBlank;
+
+public record TokenCredentialRequest(@NotBlank String login, @NotBlank String password) {
 }

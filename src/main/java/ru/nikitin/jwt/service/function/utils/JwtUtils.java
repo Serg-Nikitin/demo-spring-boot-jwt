@@ -2,6 +2,7 @@ package ru.nikitin.jwt.service.function.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.lang.Objects;
 import io.jsonwebtoken.security.Keys;
 import ru.nikitin.jwt.model.User;
 import ru.nikitin.jwt.model.security.JwtPrincipal;
@@ -54,6 +55,9 @@ public class JwtUtils {
 
 
     public static boolean checkAccessToken(String token, String jwtSecret) {
+        if (Objects.isEmpty(token)) {
+            return false;
+        }
         Claims claims = getClaims(token, jwtSecret);
         long expiredTime = claims.getExpiration().getTime();
         return new Date().getTime() > expiredTime;

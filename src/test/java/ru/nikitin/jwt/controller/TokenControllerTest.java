@@ -1,57 +1,37 @@
 package ru.nikitin.jwt.controller;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
-import ru.nikitin.jwt.DemoSpringBootJwtApplication;
-import ru.nikitin.jwt.config.SecurityConfig;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import ru.nikitin.jwt.controller.base.BaseTestController;
+import ru.nikitin.jwt.model.dto.TokenCredentialRequest;
+import ru.nikitin.jwt.model.dto.TokenResponse;
+
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ru.nikitin.jwt.controller.data.TestData.getTokenCreds;
+import static ru.nikitin.jwt.controller.data.TestData.getUser;
 
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(TokenController.class)
-@ContextConfiguration(classes = {DemoSpringBootJwtApplication.class, SecurityConfig.class})
-class TokenControllerTest {
-
-    @Autowired
-    private WebApplicationContext context;
-
-    private MockMvc mockMvc;
-
-    @BeforeEach
-    public void setup() {
-//        mockMvc = MockMvcBuilders
-//                .webAppContextSetup(context)
-//                .apply(springSecurity())
-//                .build();
-    }
-
-//    @MockBean
-//    private JwtSecurityService securityService;
+class TokenControllerTest extends BaseTestController {
 
 
     @Test
-    void login() throws Exception {
-//        User user = new User(1L, "admin", "secret", List.of(Role.ADMIN, Role.USER));
-//        TokenData tokenData = new TokenData("first", "second");
-//        TokenResponse tokenResp = new TokenResponse(tokenData);
-//        when(securityService.login("admin", "$2y$10$ownGmACmEFGsEoRzDkFa8.AiWavQNH92daelZDMj1WIt.sNn5vSPe")).thenReturn(tokenResp);
-//
-//        mockMvc.perform(MockMvcRequestBuilders
-//                        .post("/token/login")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(ConverterToJson.convert(user)))
-//                .andExpect(status().isOk());
+    public void shouldLogInUserAndReturnTokenData() {
+        registerUser();
+
+        ResponseEntity<TokenResponse> entity = loginUser();
+        System.out.println(entity.getBody());
+        assertTrue( !Objects.requireNonNull(entity.getBody()).toString().isEmpty());
+        assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
 
-//    @Test
-//    void refresh() {
-//        TokenData tokenData = new TokenData("first", "second");
-//        System.out.println(tokenData);
-//    }
+    @Test
+    public void shouldRefreshAccessTokenAndReturnTokenData() {
+
+    }
+
+
 }

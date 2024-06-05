@@ -24,11 +24,11 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.nikitin.jwt.model.exception.JwtAuthException;
+import ru.nikitin.jwt.service.consumer.CheckIfAccessTokenExpire;
 import ru.nikitin.jwt.service.function.ConvertTokenToAuthorization;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 @Slf4j
 @Data
@@ -41,6 +41,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private String url;
     @Autowired
     private ConvertTokenToAuthorization converter;
+    @Autowired
+    private CheckIfAccessTokenExpire checkToken;
 
     private AuthenticationEntryPoint entryPoint = ((request, response, authException) -> {
         response.setHeader(HttpHeaders.WWW_AUTHENTICATE, bearer.trim());
@@ -49,7 +51,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private SecurityContextHolderStrategy strategy = SecurityContextHolder.getContextHolderStrategy();
     private SecurityContextRepository repository = new RequestAttributeSecurityContextRepository();
-    private Predicate<? super String> checkToken;
 
 
     @Override

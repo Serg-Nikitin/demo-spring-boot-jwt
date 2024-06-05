@@ -51,10 +51,10 @@ public class UserService {
         }
     }
 
-    public List<FullUserData> getAll() {
+    public List<UserData> getAll() {
         return repo.findAll(Sort.by(Sort.Direction.ASC, "user_name"))
                 .stream()
-                .map(FullUserData::new)
+                .map(UserData::new)
                 .toList();
     }
 }
