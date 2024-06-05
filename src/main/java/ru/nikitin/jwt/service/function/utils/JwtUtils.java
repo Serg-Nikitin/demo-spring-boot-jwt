@@ -53,4 +53,9 @@ public class JwtUtils {
     }
 
 
+    public static boolean checkAccessToken(String token, String jwtSecret) {
+        Claims claims = getClaims(token, jwtSecret);
+        long expiredTime = claims.getExpiration().getTime();
+        return new Date().getTime() > expiredTime;
+    }
 }

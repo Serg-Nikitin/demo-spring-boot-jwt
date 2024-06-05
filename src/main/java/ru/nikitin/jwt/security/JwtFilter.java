@@ -28,6 +28,7 @@ import ru.nikitin.jwt.service.function.ConvertTokenToAuthorization;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Slf4j
 @Data
@@ -48,23 +49,20 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private SecurityContextHolderStrategy strategy = SecurityContextHolder.getContextHolderStrategy();
     private SecurityContextRepository repository = new RequestAttributeSecurityContextRepository();
-
-
-    public JwtFilter(ConvertTokenToAuthorization converter) {
-        this.converter = converter;
-    }
+    private Predicate<? super String> checkToken;
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         RequestMatcher requestMatcher = new AntPathRequestMatcher(url);
-        if (false/*requestMatcher.matches(request)*/) {
+        if (requestMatcher.matches(request)) {
 
             Optional<Authentication> auth = Optional.empty();
             try {
                 auth = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
                         .filter(str -> str.startsWith(bearer))
                         .map(str -> str.substring(bearer.length()))
+                        .filter(checkToken)
                         .map(converter);
 
             } catch (RuntimeException e) {
